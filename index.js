@@ -1,8 +1,9 @@
+const { error } = require('console');
 const express = require('express')
 const path = require('path')
 var {Client} = require('pg');
 const PORT = process.env.PORT || 5000
-
+app.use(express.urlencoded({extended: false}));
 var client = new Client({
   user: 'bxdhrqzeozmuws', // DB のユーザー名を指定
   host: 'ec2-18-207-72-235.compute-1.amazonaws.com',
@@ -24,6 +25,10 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
+  .get('/index', (req, res) => client.query('SELECT * FROM todo')
+  
+  )
+  
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 
